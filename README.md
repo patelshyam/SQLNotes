@@ -70,4 +70,61 @@
 - **FOREIGN KEY** - Maintains referential integrity.
 - **CHECK** - Enforces a condition.
 - **DEFAULT** - Sets default value.
+  
+### Primary Key
+- **Uniqueness** - Each value must be unique per row.
+- **Immutable** - Should not change once set.
+- **Simplicity** - Should be as simple as possible.
+- **Non-Intelligent** - Should not contain meaningful information.
+- **Indexed** - Automatically indexed for faster retrieval.
+- **Referential Integrity** - Basis for foreign keys.
+- **Data Type** - Usually integer or string.
+
+### Foreign Key
+- **Referential Integrity** - Links records between tables.
+- **Nullable** - Can contain NULL values unless restricted.
+- **Match Primary Keys** - Must match a primary key in the parent table or be NULL.
+- **Ensures Relationships** - Defines relationships between tables.
+- **No Uniqueness Requirement** - Does not need to be unique.
+
+### DELETE Command
+- Used to remove records from a table.
+- Syntax: `DELETE FROM table_name WHERE condition;`
+- Example: `DELETE FROM Students WHERE ID = 5;`
+- ⚠ Be careful: Running `DELETE` without `WHERE` deletes all records.
+
+### DROP vs TRUNCATE vs DELETE
+- **DROP** - Removes table structure and data permanently.
+- **TRUNCATE** - Deletes all records but keeps the table structure.
+- **DELETE** - Removes specific records based on a condition.
+
+### Functions in SQL
+- **Purpose** - Simplifies calculations, enhances reusability, improves performance.
+- **Types:**
+  1. **Built-in Functions:**
+     - **String Functions:** CONCAT, LENGTH, SUBSTRING
+     - **Numeric Functions:** ABS, ROUND, CEIL
+     - **Date & Time Functions:** NOW, DATE_FORMAT, DATEDIFF
+     - **Aggregate Functions:** COUNT, SUM, AVG
+  2. **User-Defined Functions (UDFs)**
+     - Custom functions created for specific operations.
+     - Example:
+       ```sql
+       DELIMITER $$
+       CREATE FUNCTION calculate_bonus(salary DECIMAL(10,2)) 
+       RETURNS DECIMAL(10,2)
+       DETERMINISTIC
+       BEGIN
+           RETURN salary * 0.10;
+       END $$
+       DELIMITER ;
+       ```
+     - Usage:
+       ```sql
+       SELECT first_name, last_name, salary, calculate_bonus(salary) AS bonus FROM employees;
+       ```
+
+### Things to Remember
+- SQL keywords are **not** case-sensitive.
+- Some database systems require a semicolon (`;`) at the end of queries.
 
