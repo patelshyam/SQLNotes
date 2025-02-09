@@ -123,6 +123,79 @@
        ```sql
        SELECT first_name, last_name, salary, calculate_bonus(salary) AS bonus FROM employees;
        ```
+### GROUP BY & HAVING
+- **GROUP BY** - Groups rows based on column values.
+- **HAVING** - Filters grouped data (similar to WHERE but used with GROUP BY).
+- **GROUP_CONCAT** - Concatenates values from multiple rows into a single string.
+  - Example:
+    ```sql
+    SELECT department, GROUP_CONCAT(employee_name) AS employees
+    FROM employees
+    GROUP BY department;
+    ```
+   - Output:
+     ```
++------------+------------------+
+| department | employees        |
++------------+------------------+
+| Finance    | Eve              |
+| HR         | Alice,Bob        |
+| IT         | Charlie,David    |
++------------+------------------+
+    ```
+- **WITH ROLLUP** - Provides summary rows for aggregated data.
+  - Example:
+    ```sql
+    SELECT department, SUM(salary) AS total_salary
+    FROM employees
+    GROUP BY department WITH ROLLUP;
+    ```
+  - Output:
+         ```
++------------+--------------+
+| department | total_salary |
++------------+--------------+
+| Finance    | 65000        |
+| HR         | 105000       |
+| IT         | 142000       |
+| NULL       | 312000       | -- Total sum across all departments
++------------+--------------+
+    ```
+
+### CASE WHEN
+- Used for conditional logic within SQL queries.
+- Example:
+  ```sql
+  SELECT name, salary,
+         CASE 
+             WHEN salary > 50000 THEN 'High'
+             WHEN salary BETWEEN 30000 AND 50000 THEN 'Medium'
+             ELSE 'Low'
+         END AS Salary_Category
+  FROM employees;
+  ```
+  - Output:
+    ```
+    +--------+--------+----------------+
+    | name   | salary | Salary_Category |
+    +--------+--------+----------------+
+    | John   | 60000  | High           |
+    | Jane   | 45000  | Medium         |
+    | Mike   | 25000  | Low            |
+    +--------+--------+----------------+
+    ```
+
+### Joins in SQL
+
+<img width="1193" alt="image" src="https://github.com/user-attachments/assets/8ada7a85-bf8a-485c-a2d1-dab8b84d1090" />
+
+1. **INNER JOIN** - Returns only matching records from both tables.
+2. **LEFT JOIN** - Returns all records from the left table and matching records from the right table.
+3. **RIGHT JOIN** - Returns all records from the right table and matching records from the left table.
+4. **CROSS JOIN** - Produces a Cartesian product of two tables.
+5. **SELF JOIN** - Joins a table with itself.
+6. **FULL OUTER JOIN** - Returns all records from both tables, filling NULLs where no match exists.
+
 
 ### Things to Remember
 - SQL keywords are **not** case-sensitive.
