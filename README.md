@@ -135,14 +135,14 @@
     ```
    - Output:
      ```
-+------------+------------------+
-| department | employees        |
-+------------+------------------+
-| Finance    | Eve              |
-| HR         | Alice,Bob        |
-| IT         | Charlie,David    |
-+------------+------------------+
-    ```
+      +------------+------------------+
+      | department | employees        |
+      +------------+------------------+
+      | Finance    | Eve              |
+      | HR         | Alice,Bob        |
+      | IT         | Charlie,David    |
+      +------------+------------------+
+     ```
 - **WITH ROLLUP** - Provides summary rows for aggregated data.
   - Example:
     ```sql
@@ -151,15 +151,16 @@
     GROUP BY department WITH ROLLUP;
     ```
   - Output:
-         ```
-+------------+--------------+
-| department | total_salary |
-+------------+--------------+
-| Finance    | 65000        |
-| HR         | 105000       |
-| IT         | 142000       |
-| NULL       | 312000       | -- Total sum across all departments
-+------------+--------------+
+
+    ```
+      +------------+--------------+
+      | department | total_salary |
+      +------------+--------------+
+      | Finance    | 65000        |
+      | HR         | 105000       |
+      | IT         | 142000       |
+      | NULL       | 312000       | -- Total sum across all departments
+      +------------+--------------+
     ```
 
 ### CASE WHEN
@@ -177,7 +178,7 @@
   - Output:
     ```
     +--------+--------+----------------+
-    | name   | salary | Salary_Category |
+    | name   | salary | Salary_Category|
     +--------+--------+----------------+
     | John   | 60000  | High           |
     | Jane   | 45000  | Medium         |
