@@ -123,7 +123,7 @@
        ```sql
        SELECT first_name, last_name, salary, calculate_bonus(salary) AS bonus FROM employees;
        ```
-### GROUP BY & HAVING
+## GROUP BY & HAVING
 - **GROUP BY** - Groups rows based on column values.
 - **HAVING** - Filters grouped data (similar to WHERE but used with GROUP BY).
 - **GROUP_CONCAT** - Concatenates values from multiple rows into a single string.
@@ -163,7 +163,7 @@
       +------------+--------------+
     ```
 
-### CASE WHEN
+## CASE WHEN
 - Used for conditional logic within SQL queries.
 - Example:
   ```sql
@@ -186,7 +186,9 @@
     +--------+--------+----------------+
     ```
 
-### Joins in SQL
+    
+
+## Joins in SQL
 
 <img width="1193" alt="image" src="https://github.com/user-attachments/assets/8ada7a85-bf8a-485c-a2d1-dab8b84d1090" />
 
@@ -197,8 +199,133 @@
 5. **SELF JOIN** - Joins a table with itself.
 6. **FULL OUTER JOIN** - Returns all records from both tables, filling NULLs where no match exists.
 
+## MySQL: EXISTS, ANY, and ALL Keywords
+
+### 1. `EXISTS`
+- **Purpose:** Used to check if a subquery returns any rows.
+- **Returns:** `TRUE` if the subquery returns one or more rows, otherwise `FALSE`.
+
+**Example:**
+```sql
+SELECT name FROM employees
+WHERE EXISTS (
+  SELECT 1 FROM departments
+  WHERE departments.id = employees.dept_id AND departments.name = 'HR'
+);
+```
+
+### 2. `ANY`
+- **Purpose:** Compares a value to each value in a list or subquery and returns `TRUE` if **any one** of the comparisons is `TRUE`.
+- **Often used with:** `=`, `>`, `<`, `>=`, `<=`, or `<>`.
+
+**Example:**
+```sql
+SELECT name FROM employees
+WHERE salary > ANY (
+  SELECT salary FROM employees WHERE dept_id = 2
+);
+```
+
+### 3. `ALL`
+- **Purpose:** Compares a value to **all values** in a list or subquery and returns `TRUE` only if **all comparisons** are `TRUE`.
+- **Often used with:** `=`, `>`, `<`, `>=`, `<=`, or `<>`.
+
+**Example:**
+```sql
+SELECT name FROM employees
+WHERE salary > ALL (
+  SELECT salary FROM employees WHERE dept_id = 3
+);
+```
+
+### Key Differences:
+- `EXISTS`: Focuses on the **existence** of rows.
+- `ANY`: Checks if **at least one** comparison is `TRUE`.
+- `ALL`: Requires **every** comparison to be `TRUE`.
 
 ### Things to Remember
 - SQL keywords are **not** case-sensitive.
 - Some database systems require a semicolon (`;`) at the end of queries.
+
+## MySQL Window Functions
+
+### 1. Introduction
+Window functions perform calculations across a set of table rows related to the current row within a query result.
+
+### 2. Syntax
+```sql
+SELECT column_name, 
+       window_function() OVER (PARTITION BY column_name ORDER BY column_name) AS result
+FROM table_name;
+```
+
+### 3. Common Window Functions
+
+#### a) ROW_NUMBER()
+Assigns a unique number to each row based on the specified order.
+```sql
+SELECT name, salary,
+       ROW_NUMBER() OVER (ORDER BY salary DESC) AS rank
+FROM employees;
+```
+
+#### b) RANK()
+Ranks each row within a partition, with gaps for ties.
+```sql
+SELECT name, salary,
+       RANK() OVER (ORDER BY salary DESC) AS rank
+FROM employees;
+```
+
+#### c) DENSE_RANK()
+Ranks rows without gaps for ties.
+```sql
+SELECT name, salary,
+       DENSE_RANK() OVER (ORDER BY salary DESC) AS rank
+FROM employees;
+```
+
+#### d) SUM()
+Calculates a cumulative sum.
+```sql
+SELECT department, salary,
+       SUM(salary) OVER (PARTITION BY department ORDER BY salary) AS cumulative_salary
+FROM employees;
+```
+
+#### e) AVG()
+Calculates a moving average.
+```sql
+SELECT department, salary,
+       AVG(salary) OVER (PARTITION BY department ORDER BY salary) AS avg_salary
+FROM employees;
+```
+
+### 4. PARTITION BY Clause
+Splits the result set into partitions.
+```sql
+SELECT department, name, salary,
+       SUM(salary) OVER (PARTITION BY department) AS department_total
+FROM employees;
+```
+
+### 5. ORDER BY Clause
+Specifies the order of rows within each partition.
+```sql
+SELECT name, hire_date,
+       ROW_NUMBER() OVER (PARTITION BY department ORDER BY hire_date) AS seniority
+FROM employees;
+```
+
+### 6. Practical Example
+```sql
+SELECT name, department, salary,
+       SUM(salary) OVER (PARTITION BY department ORDER BY salary) AS running_total,
+       RANK() OVER (PARTITION BY department ORDER BY salary DESC) AS salary_rank
+FROM employees;
+```
+
+### 7. Conclusion
+Window functions are powerful for analytical queries, providing insights like rankings, totals, and averages without grouping results into single rows.
+
 
