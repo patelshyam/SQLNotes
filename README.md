@@ -285,7 +285,39 @@ SELECT name, salary,
 FROM employees;
 ```
 
-#### d) SUM()
+#### d) FIRST_VALUE()
+Returns the first value in an ordered partition.
+```sql
+SELECT name, salary,
+       FIRST_VALUE(name) OVER (PARTITION BY department ORDER BY salary) AS lowest_paid
+FROM employees;
+```
+
+#### e) LAST_VALUE()
+Returns the last value in an ordered partition.
+```sql
+SELECT name, salary,
+       LAST_VALUE(name) OVER (PARTITION BY department ORDER BY salary RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS highest_paid
+FROM employees;
+```
+
+#### f) LAG()
+Returns the value from the previous row.
+```sql
+SELECT name, salary,
+       LAG(salary) OVER (PARTITION BY department ORDER BY salary) AS previous_salary
+FROM employees;
+```
+
+#### g) LEAD()
+Returns the value from the next row.
+```sql
+SELECT name, salary,
+       LEAD(salary) OVER (PARTITION BY department ORDER BY salary) AS next_salary
+FROM employees;
+```
+
+#### h) SUM()
 Calculates a cumulative sum.
 ```sql
 SELECT department, salary,
@@ -293,7 +325,7 @@ SELECT department, salary,
 FROM employees;
 ```
 
-#### e) AVG()
+#### i) AVG()
 Calculates a moving average.
 ```sql
 SELECT department, salary,
