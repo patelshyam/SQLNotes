@@ -366,7 +366,7 @@ FROM employees;
          [ORDER BY column_name_1 [ASC | DESC], ..., column_name_n [ASC | DESC]]
          [ROWS|RANGE frame_start TO frame_end]
       )
-```
+    ```
 - The frame start can be:
    - UNBOUNDED PRECEDING (starts at the first row of the partition)
    - N PRECEDING (starts N rows before the current row)
@@ -382,7 +382,7 @@ FROM employees;
 
 #### Example for **ROWS**
 
--  ```sql
+```sql
    SELECT date, revenue,
       SUM(revenue) OVER (
       ORDER BY date
@@ -393,7 +393,20 @@ FROM employees;
 ```
 <img width="1261" alt="image" src="https://github.com/user-attachments/assets/aa886309-7cf4-43ab-8750-5b41cce50749" />
 
-#### 
+#### Example for Range 
+
+```sql
+    SELECT
+        shop,
+        date,
+        revenue_amount,
+        MAX(revenue_amount) OVER (
+        ORDER BY DATE
+        RANGE BETWEEN INTERVAL '3' DAY PRECEDING
+        AND INTERVAL '1' DAY FOLLOWING
+        ) AS max_revenue
+    FROM revenue_per_shop;
+```
 
 
 
