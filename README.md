@@ -407,6 +407,8 @@ FROM employees;
         ) AS max_revenue
     FROM revenue_per_shop;
 ```
+<img width="483" alt="image" src="https://github.com/user-attachments/assets/ef6f993d-c21e-4562-9d7e-16838e8aa104" />
+
 
 
 
