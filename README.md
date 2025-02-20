@@ -333,7 +333,7 @@ SELECT department, salary,
 FROM employees;
 ```
 
-### 4. PARTITION BY Clause
+#### PARTITION BY Clause
 Splits the result set into partitions.
 ```sql
 SELECT department, name, salary,
@@ -341,7 +341,7 @@ SELECT department, name, salary,
 FROM employees;
 ```
 
-### 5. ORDER BY Clause
+#### ORDER BY Clause
 Specifies the order of rows within each partition.
 ```sql
 SELECT name, hire_date,
@@ -349,15 +349,52 @@ SELECT name, hire_date,
 FROM employees;
 ```
 
-### 6. Practical Example
+#### Practical Example
 ```sql
 SELECT name, department, salary,
        SUM(salary) OVER (PARTITION BY department ORDER BY salary) AS running_total,
        RANK() OVER (PARTITION BY department ORDER BY salary DESC) AS salary_rank
 FROM employees;
 ```
+### Frame Clause in Window Functions
+- The frame clause in window functions defines the **subset of rows('Frame')** used for caluculating the result of the function for the current row.
+- It is specified with the OVER() clause after PARTATION BY and ORDER BY.
+- The frame is defined by two parts: **a start** and an **end**, each relative to the **current row**.
+  ```sql
+      function_name (expression) OVER (
+         [PARTITION BY column_name_1, ..., column_name_n]
+         [ORDER BY column_name_1 [ASC | DESC], ..., column_name_n [ASC | DESC]]
+         [ROWS|RANGE frame_start TO frame_end]
+      )
+```
+- The frame start can be:
+   - UNBOUNDED PRECEDING (starts at the first row of the partition)
+   - N PRECEDING (starts N rows before the current row)
+   - CURRENT ROW (starts at the current row)
+- The frame end can be:
+   - UNBOUNDED FOLLOWING (ends at the last row of the partition)
+   - N FOLLOWING (ends N rows after the current row)
+   - CURRENT ROW (ends at the current row)
+- For ROWS, the frame consists of N rows coming before or after the current row
+- For RANGE, the frame consists of rows within a certain value range relative to the value in current row.
 
-### 7. Conclusion
-Window functions are powerful for analytical queries, providing insights like rankings, totals, and averages without grouping results into single rows.
+<img width="1011" alt="image" src="https://github.com/user-attachments/assets/727db737-1e16-4d9e-b99b-4cde6d6d39cd" />
+
+#### Example for **ROWS**
+
+-  ```sql
+   SELECT date, revenue,
+      SUM(revenue) OVER (
+      ORDER BY date
+      ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+   ) running_total
+   FROM sales
+      ORDER BY date;
+```
+<img width="1261" alt="image" src="https://github.com/user-attachments/assets/aa886309-7cf4-43ab-8750-5b41cce50749" />
+
+#### 
+
+
 
 
