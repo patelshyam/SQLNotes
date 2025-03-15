@@ -410,6 +410,136 @@ FROM employees;
 <img width="483" alt="image" src="https://github.com/user-attachments/assets/ef6f993d-c21e-4562-9d7e-16838e8aa104" />
 
 
+### Common Table Expression (CTE)
 
+A Common Table Expression (CTE) in SQL is a named temporary result set that exists only within the execution
+scope of a single SQL statement
 
+- CTEs can be thought of as alternatives to derived tables, inline views, or subqueries.
+- They can be used in SELECT, INSERT, UPDATE, or DELETE statements.
+- CTEs help to simplify complex queries, particularly those involving multiple subqueries or recursive queries.
+- They make your query more readable and easier to maintain.
+- A CTE is defined using the WITH keyword, followed by the CTE name and a query. The CTE can then be
+  referred to by its name elsewhere in the query.
 
+```sql
+    WITH 
+    sales_cte AS 
+        (SELECT sales_person, SUM(sales_amount) as total_sales
+                   FROM sales_table
+                   GROUP BY sales_person)
+    SELECT sales_person, total_sales
+    FROM sales_cte
+    WHERE total_sales > 1000;
+```
+
+### Subqueries in SQL
+
+- **IN:-** The IN operator allows you to specify multiple values in a WHERE clause. It returns true if a value
+  matches any value in a list.
+
+```sql
+    SELECT * FROM employees
+    WHERE department_id IN (10, 20, 30);
+```
+- **NOT IN:-** The NOT IN operator excludes the values in the list. It returns true if a value does not match
+  any value in the list.
+- **ANY:-** The ANY operator returns true if any subquery value meets the condition.
+```sql
+    SELECT * FROM employees
+    WHERE department_id ANY > (SELECT salary FROM employees WHERE department_id = 10);
+```
+- **ALL:-** The ALL operator returns true if all subquery value meets the condition.
+```sql
+    SELECT * FROM employees
+    WHERE department_id ALL > (SELECT salary FROM employees WHERE department_id = 10);
+```
+- **EXISTS:-** The EXISTS operator returns true if the subquery returns one or more records.
+- **NOT EXISTS:-** The NOT EXISTS operator returns true if the subquery returns no records.
+
+The difference between In and Any,All operators is that with Any and All you can use the comparison operators like =,>,<
+
+### Views
+- A view in SQL is a virtual table based on the result-set of an SQL statement. It contains rows and
+  columns, just like a real table. The fields in a view are fields from one or more real tables in the
+  database.
+
+- You can add SQL functions, WHERE, and JOIN statements to a view and display the data as
+  if the data were coming from one single table.
+- A view always shows up-to-date data. The database engine recreates the data every time a
+  user queries a view.
+- Views can be used to encapsulate complex queries, presenting users with a simpler interface
+  to the data.
+- They can be used to restrict access to sensitive data in the underlying tables, presenting only
+  non-sensitive data to users.
+
+```sql
+    CREATE VIEW View_Products AS
+    SELECT ProductName, Price
+    FROM Products
+    WHERE Price > 30;
+```
+### Indexing
+- Indexing in databases involves creating a data structure that improves the speed of data retrieval operations on a 
+  database table. Indexes are used to quickly locate data without having to search every row in a table each time a 
+  database table is accessed.
+
+#### Why indexing is Important?
+- **Speeding up Query Execution:** Indexes reduce the amount of data that needs to be scanned for a query, 
+  significantly speeding up data retrieval operations. 
+- **Optimizing Search Operations:** Indexes help in efficiently searching for records based on the indexed columns.
+- **Improving Sorting and Filtering:** Indexes assist in sorting and filtering operations by providing a structured way 
+    to access data.
+- **Enhancing Join Performance:** Indexes on join columns improve the performance of join operations between tables.
+
+#### How to choose the right Indexing Column
+- **Primary Key and Unique Constraints:** Always index columns that are primary keys or have unique constraints, as they 
+uniquely identify rows.
+- **Frequently Used Columns in WHERE Clauses:** Index columns that are frequently used in WHERE clauses to filter data.
+- **Columns Used in Joins:** Index columns that are used in join conditions to speed up join operations.
+- **Columns Used in ORDER BY and GROUP BY:** Index columns that are used in ORDER BY and GROUP BY clauses for faster 
+  sorting and grouping.
+- **Selectivity of the Column:** Choose columns with high selectivity (columns with many unique values) to maximize 
+  the performance benefits of the index.
+
+### Query Optimization
+- Use Column Names Instead of * in a SELECT Statement
+- Avoid including a HAVING clause in SELECT statements
+
+  - Bad example
+    ```sql
+     SELECT s.cust_id,count(s.cust_id)
+     FROM SH.sales s
+     GROUP BY s.cust_id
+     HAVING s.cust_id != '1660' AND s.cust_id != '2';
+    ``` 
+  - Optimized example
+
+    ```sql
+    SELECT s.cust_id,count(cust_id)
+    FROM SH.sales s
+    WHERE s.cust_id != '1660'
+    AND s.cust_id !='2'
+    GROUP BY s.cust_id;
+    ```
+- Consider using an IN predicate when querying an indexed column for example do not do where s.prod = 17 or s.prod = 
+  18 instead use IN operator
+- Try to use UNION ALL in place of UNION
+  - The UNION ALL statement is faster than UNION, because UNION ALL statement does not consider duplicate s, and UNION statement
+    does look for duplicates in a table while selection of rows, whether or not they exist.
+  - Bad Example
+    - ```sql
+      SELECT cust_id
+      FROM SH.sales
+      UNION
+      SELECT cust_id
+      FROM customers;
+      ```
+    - Optimized Example
+      ```sql
+      SELECT cust_id
+      FROM SH.sales
+      UNION ALL
+      SELECT cust_id
+      FROM customers;
+        ```
