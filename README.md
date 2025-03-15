@@ -1,4 +1,61 @@
+
 # SQL Notes
+
+- [SQL Notes](#sql-notes)
+    * [Database Management System (DBMS)](#database-management-system-dbms)
+        + [What is a Database?](#what-is-a-database)
+        + [What is DBMS?](#what-is-dbms)
+        + [Types of Databases](#types-of-databases)
+        + [What is RDBMS?](#what-is-rdbms)
+        + [Transactions in DBMS](#transactions-in-dbms)
+        + [States of a Transaction](#states-of-a-transaction)
+        + [ACID Properties](#acid-properties)
+    * [SQL Fundamentals](#sql-fundamentals)
+        + [What is SQL?](#what-is-sql)
+        + [What Can SQL Do?](#what-can-sql-do)
+        + [MySQL Data Types](#mysql-data-types)
+        + [Types of SQL Commands](#types-of-sql-commands)
+        + [SQL Constraints](#sql-constraints)
+        + [Primary Key](#primary-key)
+        + [Foreign Key](#foreign-key)
+        + [DELETE Command](#delete-command)
+        + [DROP vs TRUNCATE vs DELETE](#drop-vs-truncate-vs-delete)
+        + [Functions in SQL](#functions-in-sql)
+    * [GROUP BY & HAVING](#group-by-having)
+    * [CASE WHEN](#case-when)
+    * [Joins in SQL](#joins-in-sql)
+    * [MySQL: EXISTS, ANY, and ALL Keywords](#mysql-exists-any-and-all-keywords)
+        + [1. `EXISTS`](#1-exists)
+        + [2. `ANY`](#2-any)
+        + [3. `ALL`](#3-all)
+        + [Key Differences:](#key-differences)
+        + [Things to Remember](#things-to-remember)
+    * [MySQL Window Functions](#mysql-window-functions)
+        + [1. Introduction](#1-introduction)
+        + [2. Syntax](#2-syntax)
+        + [3. Common Window Functions](#3-common-window-functions)
+            - [a) ROW_NUMBER()](#a-row_number)
+            - [b) RANK()](#b-rank)
+            - [c) DENSE_RANK()](#c-dense_rank)
+            - [d) FIRST_VALUE()](#d-first_value)
+            - [e) LAST_VALUE()](#e-last_value)
+            - [f) LAG()](#f-lag)
+            - [g) LEAD()](#g-lead)
+            - [h) SUM()](#h-sum)
+            - [i) AVG()](#i-avg)
+            - [PARTITION BY Clause](#partition-by-clause)
+            - [ORDER BY Clause](#order-by-clause)
+            - [Practical Example](#practical-example)
+        + [Frame Clause in Window Functions](#frame-clause-in-window-functions)
+            - [Example for **ROWS**](#example-for-rows)
+            - [Example for Range ](#example-for-range)
+    * [Common Table Expression (CTE)](#common-table-expression-cte)
+    * [Subqueries in SQL](#subqueries-in-sql)
+    * [Views](#views)
+    * [Indexing](#indexing)
+        + [Why indexing is Important?](#why-indexing-is-important)
+        + [How to choose the right Indexing Column](#how-to-choose-the-right-indexing-column)
+    * [Query Optimization](#query-optimization)
 
 ## Database Management System (DBMS)
 
@@ -14,7 +71,6 @@
 - NoSql
 
 <img width="639" alt="image" src="https://github.com/user-attachments/assets/755beb1f-aef1-4a73-b133-a9d241c38d35" />
-
 
 ### What is RDBMS?
 - A type of DBMS where data is stored in tables with rows and columns.
@@ -123,6 +179,7 @@
        ```sql
        SELECT first_name, last_name, salary, calculate_bonus(salary) AS bonus FROM employees;
        ```
+       
 ## GROUP BY & HAVING
 - **GROUP BY** - Groups rows based on column values.
 - **HAVING** - Filters grouped data (similar to WHERE but used with GROUP BY).
@@ -185,8 +242,6 @@
     | Mike   | 25000  | Low            |
     +--------+--------+----------------+
     ```
-
-    
 
 ## Joins in SQL
 
@@ -410,7 +465,7 @@ FROM employees;
 <img width="483" alt="image" src="https://github.com/user-attachments/assets/ef6f993d-c21e-4562-9d7e-16838e8aa104" />
 
 
-### Common Table Expression (CTE)
+## Common Table Expression (CTE)
 
 A Common Table Expression (CTE) in SQL is a named temporary result set that exists only within the execution
 scope of a single SQL statement
@@ -433,7 +488,7 @@ scope of a single SQL statement
     WHERE total_sales > 1000;
 ```
 
-### Subqueries in SQL
+## Subqueries in SQL
 
 - **IN:-** The IN operator allows you to specify multiple values in a WHERE clause. It returns true if a value
   matches any value in a list.
@@ -459,7 +514,7 @@ scope of a single SQL statement
 
 The difference between In and Any,All operators is that with Any and All you can use the comparison operators like =,>,<
 
-### Views
+## Views
 - A view in SQL is a virtual table based on the result-set of an SQL statement. It contains rows and
   columns, just like a real table. The fields in a view are fields from one or more real tables in the
   database.
@@ -479,12 +534,12 @@ The difference between In and Any,All operators is that with Any and All you can
     FROM Products
     WHERE Price > 30;
 ```
-### Indexing
+## Indexing
 - Indexing in databases involves creating a data structure that improves the speed of data retrieval operations on a 
   database table. Indexes are used to quickly locate data without having to search every row in a table each time a 
   database table is accessed.
 
-#### Why indexing is Important?
+### Why indexing is Important?
 - **Speeding up Query Execution:** Indexes reduce the amount of data that needs to be scanned for a query, 
   significantly speeding up data retrieval operations. 
 - **Optimizing Search Operations:** Indexes help in efficiently searching for records based on the indexed columns.
@@ -492,7 +547,7 @@ The difference between In and Any,All operators is that with Any and All you can
     to access data.
 - **Enhancing Join Performance:** Indexes on join columns improve the performance of join operations between tables.
 
-#### How to choose the right Indexing Column
+### How to choose the right Indexing Column
 - **Primary Key and Unique Constraints:** Always index columns that are primary keys or have unique constraints, as they 
 uniquely identify rows.
 - **Frequently Used Columns in WHERE Clauses:** Index columns that are frequently used in WHERE clauses to filter data.
@@ -502,7 +557,7 @@ uniquely identify rows.
 - **Selectivity of the Column:** Choose columns with high selectivity (columns with many unique values) to maximize 
   the performance benefits of the index.
 
-### Query Optimization
+## Query Optimization
 - Use Column Names Instead of * in a SELECT Statement
 - Avoid including a HAVING clause in SELECT statements
 
